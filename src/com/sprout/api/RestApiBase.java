@@ -14,11 +14,7 @@ import java.util.Map;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Log;
-
 
 public class RestApiBase {
 
@@ -29,13 +25,6 @@ public class RestApiBase {
     protected String mApiKey;
     protected String mApiSecret;
     protected ObjectMapper mMapper;
-    
-    public interface RestResult {
-        public static final int FAIL = 0;
-        public static final int SUCCESS = 1;
-        public static final int ERROR = 2;
-        public static final int NO_INTERNET = 3;
-    }
     
     public RestApiBase(String apiToken) {
         mApiToken = apiToken;
@@ -69,7 +58,6 @@ public class RestApiBase {
         List<String> argList = new ArrayList<String>();
         for (String key : args.keySet()) {
             String arg = key + "=" + encode(args.get(key));
-            // String arg = key+"="+ args.get(key);
             argList.add(arg);
         }
         Collections.sort(argList);
@@ -94,7 +82,6 @@ public class RestApiBase {
         List<String> argList = new ArrayList<String>();
         for (String key : args.keySet()) {
             String arg = key + "=" + encode(args.get(key));
-            // String arg = key+"="+ args.get(key);
             argList.add(arg);
         }
         Collections.sort(argList);
@@ -156,6 +143,7 @@ public class RestApiBase {
 
             // this ensures the auth header is present with the post
             // otherwise, the post data will be lost. preemptive auth.
+            
             final String username = mApiKey;
             final String password = mApiSecret;     
             if (username != null && password != null) {
@@ -163,12 +151,8 @@ public class RestApiBase {
                 String encoding = Base64.encodeBytes(authStr.getBytes());
                 conn.setRequestProperty  ("Authorization", "Basic " + encoding);
             } else if (mApiToken != null) {
-                //String encoding = Base64.encodeBytes(mApiToken.getBytes());
                 conn.setRequestProperty  ("Authorization", "Token " + mApiToken);
             }
-            // conn.setRequestProperty("X-HTTP-Method-Override", "PUT"); 
-            // if POST, should use this
-            // conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
             OutputStreamWriter wr = null;
             if (requestMethod != null && !requestMethod.equals("GET")
@@ -190,24 +174,5 @@ public class RestApiBase {
         }
         return null;
     }
-
-    /**
-     * Detect if an Internet connection is available.
-     * 
-     * @return true if an Internet connection is available
-     */
-    /*
-    public static boolean internetIsAvailable() {
-        boolean bAvailable = false;
-        ConnectivityManager cm = (ConnectivityManager) ApplicationContext.getContext()
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if ((netInfo != null) && netInfo.isConnected()) {
-            // connection is available
-            bAvailable = true;
-        }
-        return bAvailable;
-    }
-    */
     
 }
