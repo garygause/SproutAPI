@@ -3,6 +3,7 @@ package com.sprout.api;
 import java.util.ArrayList;
 
 public class SproutCardResponse {
+    
     // matches response from sprout /card api
     public static final String COUNT = "count";
     public static final String NEXT = "next";

@@ -1,6 +1,7 @@
 package com.sprout.api;
 
 public class SproutPurchaseResponse {
+    
     // matches response from sprout /card/{oan}/transaction/purchase api
 
     public static final String CREATED = "created";

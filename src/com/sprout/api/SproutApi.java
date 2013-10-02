@@ -18,7 +18,6 @@ import android.util.Log;
 public class SproutApi extends RestApiBase {
 
     protected static final String TAG = "SproutApi";
-    private static final boolean JSON_FAIL_ON_UNKNOWN = false;
 
     private static final String API_BASE = "https://gigolo-vampire.herokuapp.com/";
     private static final String API_CARD = API_BASE + "card/"; // slash required at end for api
@@ -57,17 +56,6 @@ public class SproutApi extends RestApiBase {
     }
     
     public SproutPurchaseResponse purchase(long oan, String refId, ArrayList<SproutItem> items) {
-        /*
-        JSONObject json = new JSONObject();
-        try {
-            json.put("external_reference_id", refId);
-            json.put("items", items); // TODO: fix
-            // json.put("sprout_sticker_id", 0);
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        */
         
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("external_reference_id", refId);
@@ -94,9 +82,9 @@ public class SproutApi extends RestApiBase {
         headers.put("Accept", "application/json;version=1");
         headers.put("Content-type", "application/json;version=1");
 
-        String url = API_PURCHASE; // TODO: replace oan
+        String url = API_PURCHASE;
         url = url.replace("{oan}", String.valueOf(oan));
-        Log.i(TAG, "Sprout purchase using url: " + url);
+        Log.i(TAG, "Sprout purchase using url: " + url);  // FIXME: remove before launch
         
         HttpURLConnection conn = doHttpMethodReq(url, "POST", params, headers);
         if (conn != null) {
